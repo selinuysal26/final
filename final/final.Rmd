@@ -1,0 +1,160 @@
+---
+title: "İzmir Büyükşehir Belediyesi Taşıt Genel Biniş Raporları Üzerine Tahmin"
+author: 
+  - Selin Uysal[^1]
+bibliography: ../bibliography/biblio.bib
+csl: ../csl/apa-tr.csl
+header-includes:
+  - \usepackage{polyglossia}
+  - \setmainlanguage{turkish}
+  - \usepackage{booktabs}
+  - \usepackage{caption} 
+  - \captionsetup[table]{skip=10pt}
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 4
+    keep_tex: no
+    latex_engine: xelatex
+    number_sections: yes
+    toc: no
+geometry: margin=1in
+link-citations: yes
+urlcolor: blue
+fontsize: 12pt
+biblio-style: apalike
+abstract: |
+  Büyüşehirde yaşamın en büyük zorluklarından biri ulaşımdır. Türkiyenin 3. Büyükşehiri olan izmir de yoğun nüfusu yüzünden belli ulaşım sıkıntıları yaşamaktadır. Toplu taşıma araçlarının çeşitliliği yaşanan sıkıntılara çözümler sunmaktadır. Bu çalışmada İzmirde 2015-2023 yılları arasındaki biniş sayıları incelenerek 2024-2026 biniş sayıları hakkında tahmin yapılması hedeflenmektedir. Yapılan araştırmada geleceğe yönelik tahmin oranları ANOVA modeli ile araştırılmıştır. Bu doğrultuda İzmir Büyükşehir Belediyesinin açık veri portalından alınan veri seti kullanılmıştır. Veri seti üzerinde herhangi bir değişiklik yapılmadan ham veri seti kullanılmıştır. Veri setinin 2015-2023 yılları arasındaki biniş sayılarını kapsadığı göz önünde bulundurularak tek yönlü ANOVA analizi kullanılarak tahmin yapılması hedeflenmiştir. Uygulanan varyans analizi sonucunda sefer sayılarını azaltma ya da çoğaltmaya karar verilmesi öngörülecektir.
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+<!-- ======================================================================= -->
+<!-- ============================== NOTLAR ================================= -->
+<!-- ======================================================================= -->
+[^1]: 21080216, [Github Repo](https://github.com/selinuysal26/final)
+
+
+# Giriş
+İzmir, Türkiye'de Ege Bölgesi'nde yer alan şehir ve ülkenin 81 ilinden biridir. Ülkenin nüfus bakımından en kalabalık üçüncü şehridir. Ekonomik, tarihi ve sosyo-kültürel açıdan önde gelen şehirlerden biridir. Nüfusu 2022 itibarıyla 4.462.056 kişidir. Yüzölçümü olarak ülkenin yirmi üçüncü büyük ilidir. Tarafı Aydın, Balıkesir, Manisa illeri ve Ege Denizi ve Ege Adaları ile çevrilidir (@Wikipedia:2023).
+
+Toplu taşımacılık veya kamu taşımacılığı, kişisel araç kullanılmadan yapılan yolculuklar için kullanılan tüm ulaşım sistemlerine verilen genel addır. Bazı özel insanlar için ücretsiz toplu taşıma hizmeti mevcuttur. Özel ulaşım ve paylaşımlı ulaşımdan farklı, tipik olarak bir tarifeye göre yönetilen, belirlenmiş güzergahlarda işletilen ve her yolculuk için ilan edilen bir ücret vardır.[1] Bu taşıma sisteminde birden fazla yolcu taşınmakla, enerji tasarrufu yapılır. Toplu taşımacılık, şehir içi ve şehirlerarası olabilir. Toplu taşımacılık, genel olarak tren, otobüs, tramvay, troleybüs, metro için kullanılsa da, havayolları, feribotlar ve dolmuşları da kapsamakta, halkın bir yerden başka bir yere ulaşımını sağlamayı amaçlamaktadır. Personel ve öğrenci taşımacılığı da Türkiye'de toplu taşımacılığa özel sektörün katkılarının bir göstergesidir (@Wikipedia:2021).
+
+İzmir Türkiye’nin 3. büyük ili olması sebebiyle ulaşım ağı gelişmiştir. Günümüzün yadsınamaz gerçeklerinden birisi olan toplu ulaşım büyük şehirlerde dikkate değer ölçüde önem arz etmekle beraber yıllardır süregelen bir devinim içerisinde olmuştur. Bu çalışmada İzmir Büyükşehir Belediye'sinin veritabanından erişilen ulaşım hatlarının 2015-2023 tarihleri aralığındaki gün bazlı genel biniş raporları kullanılmıştır.
+
+## Çalışmanın Amacı
+Bu çalışmada İzmir’de 2015-2023 yılları arasında biniş sayılarının yer aldığı veri seti incelenerek 2024-2026 yıllarındaki biniş sayıları öngörülmesi hedeflenmektedir. Çalışmadan elde edilen bulguların İzmir’deki vatandaşların toplu taşıma kullanım eğilimlerine göre sefer sayısının düzenlenmesine yardımcı olacağı düşünülmektedir.
+
+## Literatür 
+
+Literatür taraması sonucunda büyük şehirlerde toplu taşıma kullanmanın hem gelecek için katkılarına hem de gelecek için zorluklarına değinilmiştir. Bunun yanı sıra bu sorunlara çözüm olanakları sunulmuştur. @Leung:2021 çalışmasında akıllı şehirler için toplu taşımadaki son yeniliklere ve gelecekteki zorluklarına değinmiştir. Aynı zamanda hizmetlerin amacına ve toplu taşıma hizmetini sağlamanın maliyeti üzerinde durulmuştur. @Khan:2022 çalışmalarında otobüs gruplaşmasının azaltılması üzerinde durulmuştur. Otobüs gruplaşması probleminin çözümü için durma-atlama yöntemi sunulmuştur. Bu yöntemdeki çözüm yolu ise hedef sapmadan gidiş yolunu en aza indirmektir. @Karabulut:2017 ise yapmış olduğu çalışmada artan nüfus ve araç sayısı yüzünden trafik sorunları ve çözüm yollarına İzmir özelinde değinilmiştir. Bunun yanı sıra @Hidalgo:2010 incelemesinde toplu taşımanın modernleştirilmesinden bahsetmiştir. Bu incelemede baz alınan Latin Amerika ve Asya’daki otobüs iyileştirmelerinden çıkarılan derslerdir.
+
+# Veri 
+Bu çalışmada 2015-2023 yılını kapsayan veri kullanılmıştır. Bu veri seti İzmir Büyükşehir Belediyesinin açık veri portalının oluşturduğu bir veri setidir. Bu veri seti izmirin toplu taşımadaki biniş sayılarının verilerini sağlar. Kullanılan veri seti üzerinde herhangi bir değişiklik yapılmayıp ham veri seti üzerinden analiz yapılmıştır.
+
+
+```{r, include=FALSE}
+library(tidyverse)
+library(here)
+binis <- read_csv(here("../data/binis.csv"))
+```
+
+```{r, echo=FALSE}
+library(xtable) 
+library(summarytools)
+st_options(lang = "tr")
+```
+
+```{r results='asis', echo=FALSE}
+binis %>%
+  select("FULL_FARE", "STUDENT", "TEACHER", "SIXTY_YEARS_OLD", "CHILD") %>% 
+  descr(stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE) %>% 
+  xtable(caption = "Özet İstatistikler",
+         label = "tab:ozet",
+         align = c("l", "c", "c", "c", "c", "c")) %>% 
+  print(booktabs = TRUE, comment = FALSE, caption.placement = "top")
+```
+
+Tablo \ref{tab:ozet}, İzmir'deki 2015-2023 yılları arasındaki seyahat kart çeşitlerine göre toplu taşıma kullanan kişilerin ortalama değerlerini, minimum, medyan ile maksimum değerlerinin ve standart sapmalarını göstermektedir.
+
+Tablo \ref{tab:ozet}’de görüldüğü üzere ortalamalara bakıldığı zaman tam kart kullanan kişi sayısı diğer kart çeşitlerine göre en fazladır. Tam kart kullanımını öğrenciler ve 60 yaş ve üstü insanlar takip etmekte. Öğrenci olmayan ve 60 yaşın altındaki her insan ve turistik veya iş amaçlı geziye gelen kişilerin tam bilet kullandığını göz önünde bulundurduğumuzda bu sayının çok yüksek olması pek şaşırtıcı bir sonuç sayılamaz. Toplu ulaşımın öğrenci olan kişiler için hayati önemi sayılarla gözümüzün önünde bulunurken 60 yaş üstünün sayısının da bu denli fazla olması belki istatistiksel olarak açıklanamasa da aşağıdaki grafiklerle bazı korelasyonlar kurulmaya çalışılmıştır.
+
+# Yöntem ve Veri Analizi
+
+```{r barplot, fig.align='center', fig.cap='60 Yaş Üstü İnsanlarınToplu Taşıma Çeşitlerine Göre Tercihleri', echo=FALSE}
+library(ggplot2)
+ggplot(binis, aes(x=INSTITUTION, y=SIXTY_YEARS_OLD)) + 
+  geom_bar(stat = "identity") +
+  coord_flip()
+```
+
+Şekil \@ref(fig:barplot)’de 60 yaş üstü insanların toplu taşıma çeşitlerine göre tercihleri incelendiğinde Eshot kullanımının öne çıktığı görülmüştür. 60 yaş üstü bireylerin genellikle otobüs ve raylı sistem tercih ederken, öteki yandan İzmir'de ulaşımı yavaş sağlayıp keyifli vakit geçirilebilecek toplu taşıma araçlarının kullanım oranının oldukça düşüş olması bizi bu kişilerin bir yerden bir yere varmayı asıl amaç olarak edindikleri varsayımına ittiriyor.
+
+```{r plot, fig.align='center', fig.cap='Öğrenci Kartıyla Binen Kişiler İle Öğretmen Kartıyla Binen Kişiler', echo=FALSE}
+binis %>% 
+  ggplot(aes(x = STUDENT, y = TEACHER)) +
+  geom_point() +
+  geom_smooth() +
+  scale_x_continuous("STUDENT") + 
+  scale_y_continuous("TEACHER")
+```
+
+Şekil \@ref(fig:plot)’de öğrenci kartı ve öğretmen kartı kullanılarak biniş yapanların tercihleri incelendiğinde öğretmenlere göre öğrencilerin daha çok toplu taşıma kullandığı görülmektedir. Ancak belli bir süre öğretmen ve öğrencilerin kullanım sıklıkları paralel olarak seyretmekte olup daha sonra öğretmenlerin kullanımı azalmaya başlamıştır. Söz konusu durumla ilgili çeşitli anket ve araştırmalar, öğretmenlerin 18 yaş üstü maaşlı insanlar olduğu göz önünde bulundurulduğunda bir yerden başka bir yere ulaşmada şahsi araçlarını kullandığı kanısına varılmıştır.
+
+Varyans analizi, -diğer bir ismiyle ANOVA- Sir Ronald Aylmer Fischer tarafından bulunmuş olan bir dağılımı kullanmaktadır. Temelde Fischer’in dağılımı, beklenen ve gözlenen değerlerin uyumunu test etmeye yarayan chi-square (kay-[ya da yanlış fakat yaygın bir okuyuş olarak ki] kare okunur) dağılımından türetilmiş bir dağılımdır.
+
+Temel olarak varyans analizi, gruplar arasındaki değişkenliği (farklılaşmayı-varyansı), grupların içindeki bireyler arasındaki değişkenliğe (farklılaşmaya-varyansa) oranlar. Analizin amacı, gruplar arasındaki farklılaşmanın, bireyler arasındaki farklılaşmadan büyük olup olmadığını tespit etmektir.
+
+ANOVA tek başına üç veya daha fazla grubun aritmetik ortalamalarını kümülatif olarak karşılaştırır; bu karşılaştırmalardan en az birisi anlamlı olduğunda ANOVA sonucu da anlamlı bulunur. Bu durumda hipotezler;
+
+$H_0$: Ortalamalar arasında fark yoktur.
+$H_1$: En az iki ortalama arasında anlamlı bir farklılık vardır.
+
+$$
+H_0 : \mu_0 = \mu_2 = \mu_3 = … = \mu_N
+$$
+
+Denklemde sayılar yerine yerleştiğinde F testi hipotezi oluşturulmuş olur. Analizi bu noktadan ilerletmek için doğrusal model teorisinde ihtiyacımız olan temel araçlar dik izdüşüm matrisleridir. Bu bölümdeki ilk projemiz tek yönlü bir ANOVA modeli için dik izdüşüm matrisini bulmaktır. Daha sonra tahmin, yan koşullar ve ANOVA tablosunu tartışacağız. Genellikle, tek yönlü ANOVA modeli şöyle yazılır (@Christensen:2002): 
+
+$$
+Y_{ij} = \mu + \alpha_{i} + \beta_{j} + \eta_{ij}
+$$
+
+$$
+i = 1, . . . ,t,
+$$
+
+$$
+j = 1, . . . ,N_i.
+$$
+
+ANOVA uyguladığımızda anlamlı olmayan bir p değeri elde ederiz. Elde ettiğimiz p değeri 0.05'ten büyük olamlıdır. Analizde tüm kullanıcılar göz önünde bulundurulmuş olup en mantıklı sonucu en sık toplu taşıma kullanan grup olan öğrenciler üzerinden yapılmasına karar verilmiştir.
+
+```{r aov, echo=FALSE}
+binis.aov <- aov(STUDENT ~ INSTITUTION, data = binis) 
+oneway.test(STUDENT ~ INSTITUTION, data = binis, var.equal = TRUE)
+```
+
+Analizi ilerlettiğimiz zaman, iki faktör bütün olarak anlamlı bir etkiye sahip mi bu durum incelenir. Burada açıklanabilen kareler toplamı dikkate alınarak F test değeri elde edilir. Ardından ortak etkinin (interaction effect) anlamlılığı araştırılır. Ortak etki anlamlı ise faktörlerin birbirleri üzerinde anlamlı bir etkiye sahip olduğu söylenebilir.İki faktörlü varyans analizi, bağımsız değişkenlerin her birinin ana etkisi ve ortak etkilerinin
+anlamlılığı test edilerek araştırmacılara büyük kolaylık sağlamakta ve istatiksel olarak geniş açıdan yorumlama
+kabiliyeti sunmaktadır.(@Ervural:2020)
+
+
+```{r summ, echo=FALSE}
+summary(binis.aov)
+```
+
+# Sonuç
+İzmirde toplu taşımanın sık kullanılmasını etkileyen sebeplerin başında yoğun nüfus gelmektedir. Şehirleşme devam ettiği sürece toplu taşıma kullanımı artmaya devam edecektir. 
+
+Bu çalışmada izmirin 2015-2023 yılları aralığında gerçekleştirdiği biniş sayılarını tahmin eden en uygun ANOVA modelinin ortaya konması hedeflenmiştir. İzmir Büyükşehir Belediyesi'nin açık veri portalından alınan veriler 11 adet değişkeni olması tek yönlü ANOVA modelinin kullanılmasına karar verilmesine sebep olmuştur. Analiz sonucunda öğrenci sıfatıyla toplu taşıma kullanan kişilerin İzmir Büyükşehir Belediyesi'ne bağlı toplu taşıma sistemlerine olan yoğun ilgisinin istikrarlı bir şekilde bulunduğu konumu koruyacağı gözlemlenmiştir.
+
+Toplu taşıma kullanımının gittikçe yaygınlaşmasıyla beraber İzmir için çeşitli fonksiyonlara sahip olan Akıllı Seyahat Planlama sistemi geliştirilmiştir. Bir yerden bir yere nasıl gideceği hakkında yol gösterici olan bu uygulama gelecektede oldukça yaygınlaşarak devam edeceği öngörülüyor. Bu konudan Mobil Seyahat Planlama Sistemlerinin Yaygınlaşan Kullanımı ve İzmir İçin Uygulanması adlı yazıda bahsedilmiştir (@Kut:2020).
+
+
+\newpage
+# Kaynakça {#references}
+<div id="refs"></div>
+
